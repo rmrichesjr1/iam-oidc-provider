@@ -1,0 +1,22 @@
+# This GitHub action can publish assets for release when a tag is created.
+# Currently its setup to run on any tag that matches the pattern "v*" (ie. v0.1.0).
+#
+name: release
+on:
+  push:
+    tags:
+      - 'v*'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Build
+        run: |
+	  docker build --build-arg handlername=oidc_lambda.py  -t tharsis/iam-oidc-provider-oidc  .
+	  docker build --build-arg handlername=token_lambda.py -t tharsis/iam-oidc-provider-token .
