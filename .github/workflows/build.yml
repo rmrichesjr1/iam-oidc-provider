@@ -1,22 +1,25 @@
 # This GitHub action can publish assets for release when a tag is created.
 # Currently its setup to run on any tag that matches the pattern "v*" (ie. v0.1.0).
 #
-name: release
+name: build
+
+# This GitHub action build container images for each pull request and push.
 on:
+  pull_request:
+    paths-ignore:
+      - "README.md"
   push:
-    tags:
-      - 'v*'
+    paths-ignore:
+      - "README.md"
 permissions:
   contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        handler: [oidc, token]
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Build
+      - uses: actions/checkout@v3
         run:
-          docker build --build-arg handlername=oidc_lambda.py  -t tharsis/iam-oidc-provider-oidc  .
-          docker build --build-arg handlername=token_lambda.py -t tharsis/iam-oidc-provider-token .
+          docker build --build-arg handlername=${{ matrix.handler }}_lambda.py  -t tharsis/iam-${{ matrix.handler }}-provider-oidc .
