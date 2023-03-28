@@ -20,6 +20,9 @@ jobs:
       matrix:
         handler: [oidc, token]
     steps:
-      - uses: actions/checkout@v3
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
         run:
           docker build --build-arg handlername=${{ matrix.handler }}_lambda.py  -t tharsis/iam-${{ matrix.handler }}-provider-oidc .
