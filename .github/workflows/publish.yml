@@ -1,0 +1,28 @@
+# This GitHub action can publish assets for release when a tag is created.
+# Currently its setup to run on any tag that matches the pattern "v*" (ie. v0.1.0).
+#
+# If separate tagging of full version, major version, major-minor version, and latest version
+# is needed, see the Tharsis API's .gitlab-ci.yml file for a pattern.
+# However, the matrix strategy might be better.
+#
+name: publish
+on:
+  push:
+    tags:
+      - 'v*'
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        handler: [oidc, token]
+    steps:
+      - env:
+          dest: ${{ GITHUB_API_URL }}/${{ GITHUB_REPOSITORY }}/iam-oidc-provider-${{ matrix.handler }}:latest
+          alternative_1: ${{ GITHUB_SERVER_URL }}
+        name: publish
+        run:
+          docker image tag tharsis/iam-oidc-provider-${{ matrix.handler }}:latest $dest
+          docker image push $dest

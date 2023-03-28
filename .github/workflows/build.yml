@@ -25,4 +25,4 @@ jobs:
         uses: actions/checkout@v3
       -
         run:
-          docker build --build-arg handlername=${{ matrix.handler }}_lambda.py  -t tharsis/iam-${{ matrix.handler }}-provider-oidc .
+          docker build --build-arg handlername=${{ matrix.handler }}_lambda.py  -t tharsis/iam-oidc-provider-${{ matrix.handler }} .
