@@ -34,19 +34,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build
-        run:
-          docker build --build-arg handlername=${{ matrix.handler }}_lambda.py  -t tharsis/iam-oidc-provider-${{ matrix.handler }} .
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{github.actor}}
-          password: ${{secrets.GITHUB_TOKEN}}
-      - name: Publish
-        env:
-          dest: ghcr.io/martian-cloud/iam-oidc-provider/iam-oidc-provider-${{ matrix.handler }}:latest
-        run:
-          echo dest is $dest;
-          docker image tag tharsis/iam-oidc-provider-${{ matrix.handler }}:latest $dest;
-          docker image push $dest
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
