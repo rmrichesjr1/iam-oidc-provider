@@ -7,22 +7,11 @@
 #
 # The build must be done here (duplicated from the build workflow) or the image is not available to tag and push.
 #
-############################################
-#
-# FIXME: Temporarily removed this:
-#
-#  name: publish
-#   on:
-#      push:
-#      -    tags:
-#      -      - 'v*'
-#       permissions:
-#
-############################################
-#
 name: publish
 on:
   push:
+    tags:
+      - 'v*'
 permissions:
   contents: write
 jobs:
