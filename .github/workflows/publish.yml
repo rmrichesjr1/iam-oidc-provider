@@ -38,5 +38,5 @@ jobs:
         env:
           dest: $repoURL/iam-oidc-provider-${{ matrix.handler }}:latest
         run:
-          docker image tag tharsis/iam-oidc-provider-${{ matrix.handler }}:latest $dest
+          docker image tag tharsis/iam-oidc-provider-${{ matrix.handler }}:latest $dest;
           docker image push $dest
