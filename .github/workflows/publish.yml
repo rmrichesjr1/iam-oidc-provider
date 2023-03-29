@@ -27,16 +27,16 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     env:
-      repoURL: https://ghcr.io/martian-cloud/iam-oidc-provider
+      repoURI: ghcr.io/martian-cloud/iam-oidc-provider
     strategy:
       matrix:
         handler: [oidc, token]
     steps:
       - name: log in to the GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login $repoURL -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://$repoURI -u ${{ github.actor }} --password-stdin
       - name: publish
         env:
-          dest: ${{ env.repoURL }}/iam-oidc-provider-${{ matrix.handler }}:latest
+          dest: ${{ env.repoURI }}/iam-oidc-provider-${{ matrix.handler }}:latest
         run:
           docker image tag tharsis/iam-oidc-provider-${{ matrix.handler }}:latest $dest;
           docker image push $dest
