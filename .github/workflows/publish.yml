@@ -5,11 +5,23 @@
 # is needed, see the Tharsis API's .gitlab-ci.yml file for a pattern.
 # However, the matrix strategy might be better.
 #
+############################################
+#
+# FIXME: Temporarily removed this:
+#
+#  name: publish
+#   on:
+#      push:
+#      -    tags:
+#      -      - 'v*'
+#       permissions:
+#
+#
+############################################
+#
 name: publish
 on:
   push:
-    tags:
-      - 'v*'
 permissions:
   contents: write
 jobs:
