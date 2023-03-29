@@ -28,23 +28,25 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    env:
-      repoURI: ghcr.io/martian-cloud/iam-oidc-provider
     strategy:
       matrix:
         handler: [oidc, token]
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v3
-      -
+      - name: Build
         run:
           docker build --build-arg handlername=${{ matrix.handler }}_lambda.py  -t tharsis/iam-oidc-provider-${{ matrix.handler }} .
-      - name: log in to the GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://$repoURI -u ${{ github.actor }} --password-stdin
-      - name: publish
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+      - name: Publish
         env:
-          dest: ${{ env.repoURI }}/iam-oidc-provider-${{ matrix.handler }}:latest
+          dest: ghcr.io/martian-cloud/iam-oidc-provider/iam-oidc-provider-${{ matrix.handler }}:latest
         run:
+          echo dest is $dest;
           docker image tag tharsis/iam-oidc-provider-${{ matrix.handler }}:latest $dest;
           docker image push $dest
