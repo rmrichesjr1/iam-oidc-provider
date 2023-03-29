@@ -5,6 +5,8 @@
 # is needed, see the Tharsis API's .gitlab-ci.yml file for a pattern.
 # However, the matrix strategy might be better.
 #
+# The build must be done here (duplicated from the build workflow) or the image is not available to tag and push.
+#
 ############################################
 #
 # FIXME: Temporarily removed this:
@@ -32,6 +34,12 @@ jobs:
       matrix:
         handler: [oidc, token]
     steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        run:
+          docker build --build-arg handlername=${{ matrix.handler }}_lambda.py  -t tharsis/iam-oidc-provider-${{ matrix.handler }} .
       - name: log in to the GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://$repoURI -u ${{ github.actor }} --password-stdin
       - name: publish
