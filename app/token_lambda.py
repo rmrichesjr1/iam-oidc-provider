@@ -15,9 +15,6 @@ VALID_AUDIENCES = json.loads(os.environ.get('VALID_AUDIENCES'))
 
 def handler(event, context):
     try:
-        if "action" in event:
-            return {'message': 'goodbye'}
-
         body = event.get('body')
         if not body:
             raise ValidationError('Missing request body. The following fields are required ["aud"]')
