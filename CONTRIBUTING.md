@@ -18,10 +18,9 @@ There are many ways you can contribute to Tharsis projects.  This document descr
 
 ## Reporting Bugs
 
-- Search the existing GitLab issues to see if someone else already reported it.
+- Search the existing GitHub issues to see if someone else already reported it.
 - Make sure you're using the latest version of the appropriate project(s) in case it might have already been fixed in a later version.
-- If no existing issue matches, file a new GitLab issue.
-- Please use [this GitLab-supplied template.](https://gitlab.com/gitlab-org/gitlab/-/blob/master/.gitlab/issue_templates/Bug.md)
+- If no existing issue matches, file a new GitHub issue.
 - Make sure the following items are clearly described in your bug report:
     - the versions of Tharsis projects you're using
     - steps to reproduce the problem
