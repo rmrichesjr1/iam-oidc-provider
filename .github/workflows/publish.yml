@@ -53,7 +53,7 @@ jobs:
       - run: echo Showing macro github.repository... ${{ github.repository }}
       - run: echo Showing macro github.ref.......... ${{ github.ref }}
       - run: echo Showing macro repository_name..... $repository_name
-      - run: echo Showing potential tag............. ghcr.io/${{ github.repository }}/$repository_name-${{ matrix.handler }}:latest
+      - run: echo Showing potential tag............. ghcr.io/${{ github.repository }}/$env:repository_name-${{ matrix.handler }}:latest
       -
         name: Build and push Docker image
         uses: docker/build-push-action@v4
