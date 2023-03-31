@@ -1,6 +1,12 @@
 # This GitHub action can publish assets for release when a tag is created.
 # Currently its setup to run on any tag that matches the pattern "v*" (ie. v0.1.0).
 #
+# Two container images are built with the docker build arg 'handlername' set to oidc and token.
+# The handler name is appended as a suffix to the tag.
+#
+# The current repository name ("iam-oidc-provider") does not appear to exist by itself in any supplied variable,
+# so make it a job-level environment variable.
+#
 name: build
 
 # This GitHub action build container images for each pull request and push.
@@ -15,6 +21,8 @@ permissions:
   contents: write
 jobs:
   build:
+    env:
+      repository_name: iam-oidc-provider
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,4 +35,4 @@ jobs:
         with:
           context: .
           push: false
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository }}/${{ env.repository_name }}-${{ matrix.handler }}:${{ github.sha }}

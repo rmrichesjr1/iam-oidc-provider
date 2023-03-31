@@ -9,25 +9,14 @@
 # Macro github.ref expands to "refs/heads/feature/initial-files" where the last two segments are the
 # feature branch name.  That does not work as a version reference for tagging an image.
 #
-# The current repository name ("iam-oidc-provider") does not appear to be in any supplied variable.
-#
-############################################
-#
-# FIXME: Restore preamble to this:
-#
-#   push:
-#     tags:
-#       - 'v*'
-#
-############################################
-#
-# FIXME: Add the handler name to the tag.
-# Try to end up with something like this:
-# ghcr.io/martian-cloud/iam-oidc-provider/iam-oidc-provider-${{ matrix.handler }}:latest
+# The current repository name ("iam-oidc-provider") does not appear to exist by itself in any supplied variable,
+# so make it a job-level environment variable.
 #
 name: publish
 on:
   push:
+    tags:
+      - 'v*'
 permissions:
   contents: write
 jobs:
@@ -49,11 +38,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo Showing macro matrix.handler...... ${{ matrix.handler }}
-      - run: echo Showing macro github.repository... ${{ github.repository }}
-      - run: echo Showing macro github.ref.......... ${{ github.ref }}
-      - run: echo Showing macro repository_name..... $repository_name
-      - run: echo Showing potential tag............. ghcr.io/${{ github.repository }}/${{ env.repository_name }}-${{ matrix.handler }}:latest
       -
         name: Build and push Docker image
         uses: docker/build-push-action@v4
