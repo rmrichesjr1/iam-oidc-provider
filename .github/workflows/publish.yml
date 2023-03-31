@@ -40,12 +40,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: Echo the macros
-        run:
-          echo "matrix.handler: ${{ matrix.handler }}";
-          echo "github.repository: ${{ github.repository }}";
-          echo "github.ref: ${{ github.ref }}"
+      - run: echo "Echoing macro matrix.handler:    ${{ matrix.handler }}"
+      - run: echo "Echoing macro github.repository: ${{ github.repository }}"
+      - run: echo "Echoing macro github.ref:        ${{ github.ref }}"
       -
         name: Build and push Docker image
         uses: docker/build-push-action@v4
