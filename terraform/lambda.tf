@@ -3,7 +3,6 @@ resource "aws_lambda_function" "token_lambda" {
   handler = "token_lambda.handler"
   role = aws_iam_role.lambda_role.arn
 
-  create_package = false
   image_uri = "ghcr.io/martian-cloud/iam-oidc-provider/iam-oidc-provider-token:latest"
   package_type = "Image"
 
@@ -29,7 +28,6 @@ resource "aws_lambda_function" "oidc_lambda" {
   handler = "oidc_lambda.handler"
   role = aws_iam_role.lambda_role.arn
 
-  create_package = false
   image_uri = "ghcr.io/martian-cloud/iam-oidc-provider/iam-oidc-provider-oidc:latest"
   package_type = "Image"
 
