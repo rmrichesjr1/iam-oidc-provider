@@ -61,4 +61,4 @@ jobs:
           context: .
           build-args: handlername=${{ matrix.handler }}
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.ref }}
+          tags: ghcr.io/${{ github.repository }}/${{ env.repository_name }}-${{ matrix.handler }}:latest
