@@ -3,11 +3,24 @@
 #
 # The build must be done here (duplicated from the build workflow) or the image is not available to tag and push.
 #
+# Two container images are built with the docker build arg 'handlername' set to oidc and token.
+# The handler name is appended as a suffix to the tag.
+#
+############################################
+#
+# FIXME: Restore preamble to this:
+#
+#   push:
+#     tags:
+#       - 'v*'
+#
+############################################
+#
+# FIXME: Add the handler name to the tag.
+#
 name: publish
 on:
   push:
-    tags:
-      - 'v*'
 permissions:
   contents: write
 jobs:
@@ -17,17 +30,27 @@ jobs:
       matrix:
         handler: [oidc, token]
     steps:
-      - name: Checkout
+      -
+        name: Checkout
         uses: actions/checkout@v3
-      - name: Login to GitHub Container Registry
+      -
+        name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push Docker image
+      -
+        name: Echo the macros
+	run:
+          echo matrix.handler: ${{ matrix.handler }}
+          echo github.repository: ${{ github.repository }}
+          echo github.ref: ${{ github.ref }}
+      -
+        name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
+          build-args: handlername=${{ matrix.handler }}
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.ref }}
